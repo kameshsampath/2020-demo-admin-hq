@@ -1,0 +1,13 @@
+---
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: gamecache-infinispan
+spec:
+  image: infinispan/server:latest
+  replicas: 2
+  service:
+    type: Cache
+  security: {}
+  expose: 
+    type: NodePort

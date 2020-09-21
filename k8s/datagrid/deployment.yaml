@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infinispan
+  labels:
+    version: 10.1.1.Final
+spec:
+  selector:
+    matchLabels:
+      app: infinispan
+  template:
+    metadata:
+      labels:
+        app: infinispan
+    spec:
+      containers:
+      - name: infinispan
+        image: quay.io/infinispan/server:10.1.3.Final
+        ports:
+          - containerPort: 11222
+            name: hotrod
+            protocol: TCP
+        env:
+          - name: CONFIG_PATH
+            value: "/user-config/config.yaml"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /user-config
+        - name: infinispan-logs
+          mountPath: /opt/infinispan/server/log
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2048Mi
+        livenessProbe:
+          httpGet:
+            path: /rest/v2/cache-managers/default/health/status
+            port: 11222
+          failureThreshold: 5
+          initialDelaySeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /rest/v2/cache-managers/default/health/status
+            port: 11222
+          failureThreshold: 5
+          initialDelaySeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+      - name: configure-infinispan
+        image: quay.io/infinispan/server:10.1.3.Final
+        command: ['sh','/user-config/init.sh']
+        volumeMounts:
+        - name: config-volume
+          mountPath: /user-config
+        - name: infinispan-logs
+          mountPath: /opt/infinispan/server/log
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "150Mi"
+      volumes:
+        - name: infinispan-logs
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: infinispan-user-config
+      

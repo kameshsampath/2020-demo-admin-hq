@@ -5,9 +5,10 @@ const log = require("../utils/log")("datagrid");
 
 const DATAGRID_HOST = env.get("DATAGRID_HOST").asString();
 const DATAGRID_PORT = env.get("DATAGRID_HOTROD_PORT").asIntPositive();
+const DATAGRID_TOPOLOGY_UPDATES = env.get("DATAGRID_TOPOLOGY_UPDATES").asBool();
 
 async function initClient() {
-  let client = await infinispan.client({port: DATAGRID_PORT, host: DATAGRID_HOST}, {cacheName: "players"});
+  let client = await infinispan.client({ port: DATAGRID_PORT, host: DATAGRID_HOST }, { cacheName: "players", topologyUpdates: DATAGRID_TOPOLOGY_UPDATES });
   log.info(`Connected to Infinispan player data`);
 
   let stats = await client.stats();

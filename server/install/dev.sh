@@ -4,7 +4,9 @@ printf "\n\n######## admin-server dev ########\n"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ENV_FILE=${DIR}/../../.env.dev
-echo $ENV_FILE
+
+cat "$ENV_FILE"
+
 source ${ENV_FILE}
 for ENV_VAR in $(sed 's/=.*//' ${ENV_FILE}); do export "${ENV_VAR}"; done
 

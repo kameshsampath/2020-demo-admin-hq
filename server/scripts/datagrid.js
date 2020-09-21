@@ -2,7 +2,7 @@ const infinispan = require('infinispan');
 
 const DATAGRID_HOST = process.env.DATAGRID_HOST || "127.0.0.1";
 const DATAGRID_PORT = process.env.DATAGRID_HOTROD_PORT || 11222;
-
+const TOPOLOGY_UPDATES = process.env.TOPOLOGY_UPDATES || true;
 
 async function put(key, value, clientOptions) {
   console.log(`=========== ${DATAGRID_HOST}:${DATAGRID_PORT} ${JSON.stringify(clientOptions)} =================`);
@@ -56,8 +56,8 @@ async function clear(clientOptions) {
     configuration: {}
   };
 
-  const gameOptions = {cacheName: "game"};
-  const playerOptions = {cacheName: "players"};
+  const gameOptions = { cacheName: "game", topologyUpdates: TOPOLOGY_UPDATES };
+  const playerOptions = { cacheName: "players", topologyUpdates: TOPOLOGY_UPDATES };
 
   // await put(key, value);
   // await remove(key, clientOptions);

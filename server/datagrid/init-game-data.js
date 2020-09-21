@@ -10,9 +10,10 @@ const botConfigHandler = require("./handlers/bot-config");
 
 const DATAGRID_HOST = env.get("DATAGRID_HOST").asString();
 const DATAGRID_HOTROD_PORT = env.get("DATAGRID_HOTROD_PORT").asIntPositive();
+const DATAGRID_TOPOLOGY_UPDATES = env.get("DATAGRID_TOPOLOGY_UPDATES").asBool();
 
 async function initClient() {
-  let client = await infinispan.client({port: DATAGRID_HOTROD_PORT, host: DATAGRID_HOST}, {cacheName: "game"});
+  let client = await infinispan.client({ port: DATAGRID_HOTROD_PORT, host: DATAGRID_HOST }, { cacheName: "game", topologyUpdates: DATAGRID_TOPOLOGY_UPDATES });
   log.info(`Connected to Infinispan game data`);
 
   let stats = await client.stats();
