@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skupper-messaging-external
+spec:
+  ports:
+  - name: amqps
+    port: 5671
+    protocol: TCP
+    targetPort: 5671
+  selector:
+    application: skupper-router
+    skupper.io/component: router
+  sessionAffinity: None
+  type: NodePort
