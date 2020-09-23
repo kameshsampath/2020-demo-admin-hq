@@ -1,6 +1,6 @@
 import lodashGet from 'lodash/get';
 
-import { SKIP_AUTH_CHECK, SEND_AUTH_CHECK } from '../Home/actions';
+import { SKIP_AUTH_CHECK, SEND_AUTH_CHECK, USER_LOGOUT } from '../Home/actions';
 import {
   WS_OPEN,
   WS_INCOMING_MESSAGE,
@@ -9,6 +9,7 @@ import {
   WS_ERROR
 } from '../Socket/actions';
 import { INCOMING_MESSAGE_TYPES } from '../Socket/messageTypes';
+import { GAME_CONFIG } from './GameConfigs';
 
 const initialState = {
   connection: null,
@@ -20,17 +21,28 @@ const initialState = {
   skipAuth: false,
   validAuth: false,
   username: null,
-  password: null
+  password: null,
+  gameid: "default",
+  gameConfig: {},
 };
 
 export const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case USER_LOGOUT: {
+      //clear the local storage
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+      localStorage.removeItem('gameid');
+      state = initialState;
+      return state;
+    }
     case SKIP_AUTH_CHECK:
       return {
         ...state,
         username: null,
         password: null,
         validAuth: false,
+        gameConfig: GAME_CONFIG["default"],
         skipAuth: action.payload.skipAuth || false
       };
     case SEND_AUTH_CHECK:
@@ -38,6 +50,8 @@ export const appReducer = (state = initialState, action) => {
         ...state,
         username: action.payload.username,
         password: action.payload.password,
+        gameid: action.payload.gameid,
+        gameConfig: GAME_CONFIG[action.payload.gameid],
         validAuth: false,
         skipAuth: false
       };
@@ -88,16 +102,16 @@ function processWsMessage(state, message) {
   return {...state, ...newValues, loading: false, connection: 'connected'};
 }
 
-
 function updateLocalStorage(state, message) {
   // yes, I know how bad this is
   const username = lodashGet(state, 'username');
   const password = lodashGet(state, 'password');
   const validAuth = lodashGet(message, 'validAuth');
-
+  const gameid = lodashGet(state, 'gameid');
   if (!validAuth) {
     return;
   }
   localStorage.setItem('username', username);
   localStorage.setItem('password', password);
+  localStorage.setItem('gameid', gameid);
 }
