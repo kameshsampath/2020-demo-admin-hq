@@ -7,10 +7,11 @@ import { SEND_AUTH_CHECK } from '../../Home/actions';
 function* executeSendInit(action) {
   const username = localStorage.getItem('username') || undefined;
   const password = localStorage.getItem('password') || undefined;
+  const gameType = localStorage.getItem('gameType') || undefined;
   if (username && password) {
     yield put({
       type: SEND_AUTH_CHECK,
-      payload: {username, password}
+      payload: { username, password, gameType }
     });
   }
 

@@ -9,7 +9,8 @@ function* executeResetGame(action) {
   yield put(sendOutgoingMessage({
     type: OUTGOING_MESSAGE_TYPES.RESET_GAME,
     username: action.payload.username,
-    password: action.payload.password
+    password: action.payload.password,
+    gameType: action.payload.gameType
   }));
 }
 

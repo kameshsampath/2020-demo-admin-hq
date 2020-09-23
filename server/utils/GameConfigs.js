@@ -1,4 +1,4 @@
-export const GAME_CONFIG = {
+module.exports.GAME_CONFIG = {
     "balloon-game": {
         "background": "default",
         "ignore": 100,
@@ -23,5 +23,3 @@ export const GAME_CONFIG = {
 
     }
 };
-
-export default GAME_CONFIG;

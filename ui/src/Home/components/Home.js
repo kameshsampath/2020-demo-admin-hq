@@ -10,13 +10,15 @@ import Bots from '../../Bots';
 
 import './Home.scss';
 import { skipAuthCheck, sendAuthCheck, logout } from '../actions';
+import BalloonGameConfig from '../../GameConfig/components/BalloonGameConfig';
+import GameConfig from '../../GameConfig/components/GameConfig';
 
-function Home ({ game, validAuth, skipAuth, sendAuthCheck, skipAuthCheck, logout }) {
+function Home ({ game, gameType, validAuth, skipAuth, sendAuthCheck, skipAuthCheck, logout }) {
   const [tab, updateTab] = useState('leaderboard');
   const [usernameText, updateUsernameText] = useState('');
   const [passwordText, updatePasswordText] = useState('');
   const [showPassword, updateShowPassword] = useState(true);
-  const [gameid, updateGameId] = useState('');
+  const [gameTypeSelect, updateGameTypeSelect] = useState('');
 
   function renderAuth() {
     if (validAuth) {
@@ -56,9 +58,22 @@ function Home ({ game, validAuth, skipAuth, sendAuthCheck, skipAuthCheck, logout
     }
   }
 
+  function renderConfig () {
+    switch (gameType) {
+      case 'balloon-game':
+        return (
+          <BalloonGameConfig />
+        );
+      default:
+        return (
+          <GameConfig />
+        );
+    }
+  }
+
   function onLoginKey(e) {
     if (e.key === 'Enter') {
-      sendAuthCheck(usernameText, passwordText, gameid);
+      sendAuthCheck(usernameText, passwordText, gameTypeSelect);
     }
 
     if (e.key === 'Escape') {
@@ -73,7 +88,7 @@ function Home ({ game, validAuth, skipAuth, sendAuthCheck, skipAuthCheck, logout
         <GameStatus game={game}/>
         <GameTools/>
       </section>
-      {gameid === 'gtp' && 
+      {gameType === 'gtp' && 
         <div className='tabs is-boxed'>
           <ul>
             <li className={tab === 'leaderboard' ? 'is-active' : ''}>
@@ -85,7 +100,8 @@ function Home ({ game, validAuth, skipAuth, sendAuthCheck, skipAuthCheck, logout
           </ul>
         </div>
       }
-      {gameid === 'gtp' && renderTab()}
+      {gameType === 'gtp' && renderTab()}
+      {renderConfig()}
       <div className={cx('modal', 'login-modal', {'is-active': !validAuth && !skipAuth})}>
         <div className='modal-background'/>
         <div className='modal-card'>
@@ -128,8 +144,8 @@ function Home ({ game, validAuth, skipAuth, sendAuthCheck, skipAuthCheck, logout
                 <div className='select game-input-control'>
                   <select
                     className='select'
-                    value={gameid}
-                    onChange={e => updateGameId(e.target.value)}>
+                    value={gameType}
+                    onChange={e => updateGameTypeSelect(e.target.value)}>
                     <option value="default">Select a Game</option>
                     <option value="balloon-game">Balloon Popping</option>
                     <option value="gtp">Guess The Price</option>
@@ -141,7 +157,7 @@ function Home ({ game, validAuth, skipAuth, sendAuthCheck, skipAuthCheck, logout
           <footer className='modal-card-foot'>
             <button className='button is-success'
               onClick={
-                () => sendAuthCheck(usernameText, passwordText, gameid)}>Submit
+                () => sendAuthCheck(usernameText, passwordText, gameTypeSelect)}>Submit
             </button>
             <button className='button' onClick={() => skipAuthCheck(true)}>Skip</button>
           </footer>
@@ -157,8 +173,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    sendAuthCheck: (username, password, gameid) => {
-      dispatch(sendAuthCheck(username, password, gameid));
+    sendAuthCheck: (username, password, gameType) => {
+      dispatch(sendAuthCheck(username, password, gameType));
     },
     skipAuthCheck: (skipAuth) => {
       dispatch(skipAuthCheck(skipAuth));

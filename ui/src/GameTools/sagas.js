@@ -15,9 +15,12 @@ function* watchSendPing() {
 function* executeUpdateGameState(action) {
   yield put(sendOutgoingMessage({
     type: OUTGOING_MESSAGE_TYPES.UPDATE_GAME,
-    game: {state: action.payload.state},
+    game: {
+      state: action.payload.state
+    },
     username: action.payload.username,
-    password: action.payload.password
+    password: action.payload.password,
+    gameType: action.payload.gameType  
   }));
 }
 
@@ -29,7 +32,8 @@ function* executeResetGame(action) {
   yield put(sendOutgoingMessage({
     type: OUTGOING_MESSAGE_TYPES.RESET_GAME,
     username: action.payload.username,
-    password: action.payload.password
+    password: action.payload.password,
+    gameType: action.payload.gameType,
   }));
 }
 

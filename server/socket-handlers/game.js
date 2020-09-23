@@ -1,6 +1,7 @@
 const log = require('../utils/log')('game-socket-handler');
 const {GAME_DATA_KEYS, GAME_STATES} = require("../datagrid/game-constants");
 const AMQ_MESSAGE_TYPES = require('../messaging/message-types');
+const GAME_CONFIG = require('../utils/GameConfigs');
 const validAuth = require('./valid-auth');
 
 async function gameHandler(ws, messageObj) {
@@ -25,8 +26,11 @@ async function gameHandler(ws, messageObj) {
     return;
   }
 
+  log.debug("GAME TYPE" + messageObj.gameType);
   Object.assign(game, messageObj.game);
+  Object.assign(game.configuration, GAME_CONFIG[messageObj.gameType])
   game.date = new Date().toISOString()
+  log.debug("Updated game" + JSON.stringify(game));
 
   try {
     await global.gameData.put(GAME_DATA_KEYS.CURRENT_GAME, JSON.stringify(game));

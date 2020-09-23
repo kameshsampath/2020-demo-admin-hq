@@ -4,14 +4,14 @@ export const sendPing = () => ({
 });
 
 export const UPDATE_GAME_STATE = 'GameTools.UPDATE_GAME_STATE';
-export const updateGameState = (state, username, password) => ({
+export const updateGameState = (state, username, password, gameType) => ({
   type: UPDATE_GAME_STATE,
-  payload: {state, username, password}
+  payload: { state, username, password, gameType }
 });
 
 export const RESET_GAME = 'GameTools.RESET_GAME';
-export const resetGame = (username, password) => ({
+export const resetGame = (username, password, gameType) => ({
   type: RESET_GAME,
-  payload: {username, password}
+  payload: { username, password, gameType }
 });
 

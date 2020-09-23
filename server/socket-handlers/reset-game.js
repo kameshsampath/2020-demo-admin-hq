@@ -3,16 +3,17 @@ const { v4: uuidv4 } = require('uuid');
 const AMQ_MESSAGE_TYPES = require('../messaging/message-types');
 const {GAME_DATA_KEYS, GAME_STATES} = require("../datagrid/game-constants");
 const validAuth = require('./valid-auth');
+const { GAME_CONFIG } = require('../utils/GameConfigs');
 
 async function resetGameHandler(ws, messageObj) {
   if (!validAuth(ws, messageObj)) {
     return;
   }
-  await resetBotConfig();
-  await resetGame();
+  await resetBotConfig(messageObj.gameType ? messageObj.gameType : "default");
+  await resetGame(messageObj.gameType ? messageObj.gameType : "default");
 }
 
-async function resetBotConfig() {
+async function resetBotConfig (gameType) {
   let botConfig =  {
     date: new Date().toISOString()
   };
@@ -38,12 +39,12 @@ async function resetBotConfig() {
   }
 }
 
-async function resetGame() {
+async function resetGame (gameType) {
   let game =  {
     id: uuidv4(),
     state: GAME_STATES.LOBBY,
     date: new Date().toISOString(),
-    configuration: {},
+    configuration: GAME_CONFIG[gameType],
   };
 
   try {

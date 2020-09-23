@@ -9,7 +9,6 @@ import {
   WS_ERROR
 } from '../Socket/actions';
 import { INCOMING_MESSAGE_TYPES } from '../Socket/messageTypes';
-import { GAME_CONFIG } from './GameConfigs';
 
 const initialState = {
   connection: null,
@@ -22,8 +21,7 @@ const initialState = {
   validAuth: false,
   username: null,
   password: null,
-  gameid: "default",
-  gameConfig: {},
+  gameType: "default"
 };
 
 export const appReducer = (state = initialState, action) => {
@@ -32,7 +30,7 @@ export const appReducer = (state = initialState, action) => {
       //clear the local storage
       localStorage.removeItem('username');
       localStorage.removeItem('password');
-      localStorage.removeItem('gameid');
+      localStorage.removeItem('gameType');
       state = initialState;
       return state;
     }
@@ -42,7 +40,7 @@ export const appReducer = (state = initialState, action) => {
         username: null,
         password: null,
         validAuth: false,
-        gameConfig: GAME_CONFIG["default"],
+        gameType: "default",
         skipAuth: action.payload.skipAuth || false
       };
     case SEND_AUTH_CHECK:
@@ -50,8 +48,7 @@ export const appReducer = (state = initialState, action) => {
         ...state,
         username: action.payload.username,
         password: action.payload.password,
-        gameid: action.payload.gameid,
-        gameConfig: GAME_CONFIG[action.payload.gameid],
+        gameType: action.payload.gameType,
         validAuth: false,
         skipAuth: false
       };
@@ -107,11 +104,11 @@ function updateLocalStorage(state, message) {
   const username = lodashGet(state, 'username');
   const password = lodashGet(state, 'password');
   const validAuth = lodashGet(message, 'validAuth');
-  const gameid = lodashGet(state, 'gameid');
+  const gameType = lodashGet(state, 'gameType');
   if (!validAuth) {
     return;
   }
   localStorage.setItem('username', username);
   localStorage.setItem('password', password);
-  localStorage.setItem('gameid', gameid);
+  localStorage.setItem('gameType', gameType);
 }

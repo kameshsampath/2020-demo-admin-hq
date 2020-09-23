@@ -1,6 +1,6 @@
 export const RESET_GAME = 'GameStatus.RESET_GAME';
-export const resetGame = (username, password) => ({
+export const resetGame = (username, password, gameType) => ({
   type: RESET_GAME,
-  payload: {username, password}
+  payload: { username, password, gameType }
 });
 
