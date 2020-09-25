@@ -8,6 +8,7 @@ export const OUTGOING_MESSAGE_TYPES = {
   INIT: 'init',
   PING: 'ping',
   UPDATE_GAME: 'update-game',
+  UPDATE_GAME_CONFIG: 'update-game-config',
   RESET_GAME: 'reset-game',
   BOT_PING: 'bot-ping',
   BOT_CONFIG: 'bot-config',

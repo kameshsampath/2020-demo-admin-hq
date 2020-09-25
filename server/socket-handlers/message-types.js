@@ -1,6 +1,7 @@
 module.exports.INCOMING_MESSAGE_TYPES = {
   INIT: 'init',
   UPDATE_GAME: 'update-game',
+  UPDATE_GAME_CONFIG: 'update-game-config',
   PING: 'ping',
   RESET_GAME: 'reset-game',
   BOT_PING: 'bot-ping',

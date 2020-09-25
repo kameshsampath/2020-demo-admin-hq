@@ -1,15 +1,11 @@
 .game-config {
-  margin-bottom: 1rem;
-
-  .notification {
-    padding: 0.5rem;
+   margin-top: 0.5rem;
+  .section{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
-
-  .title {
-    margin-bottom: 2rem;
+  .button{
+    float: right;
   }
-
-  .subtitle {
-    margin-left: 2px;
-  }
+  //TODO fix checkbox padding
 }

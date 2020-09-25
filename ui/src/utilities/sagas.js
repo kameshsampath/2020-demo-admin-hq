@@ -5,6 +5,7 @@ import homeSagas from '../Home/sagas';
 import gameStatusSagas from '../GameStatus/sagas';
 import gameToolsSagas from '../GameTools/sagas';
 import botsSagas from '../Bots/sagas';
+import gameConfigSagas from '../GameConfig/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
     ...gameStatusSagas,
     ...gameToolsSagas,
     ...botsSagas,
+    ...gameConfigSagas,
   ]);
 }

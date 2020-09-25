@@ -144,7 +144,7 @@ function Home ({ game, gameType, validAuth, skipAuth, sendAuthCheck, skipAuthChe
                 <div className='select game-input-control'>
                   <select
                     className='select'
-                    value={gameType}
+                    value={gameTypeSelect}
                     onChange={e => updateGameTypeSelect(e.target.value)}>
                     <option value="default">Select a Game</option>
                     <option value="balloon-game">Balloon Popping</option>
